@@ -1,0 +1,88 @@
+Instalar Dependencias
+En la terminal de Replit, ejecuta:
+
+bash
+Copiar
+Editar
+poetry install
+Esto instalará Django y cualquier otra dependencia definida en tu pyproject.toml.
+
+Configurar el Servidor de Desarrollo
+En Replit es importante que el servidor esté configurado para escuchar en todas las interfaces. Puedes editar (o crear) el archivo .replit y establecer el comando de ejecución de esta forma:
+
+ini
+Copiar
+Editar
+run = "poetry run python manage.py runserver 0.0.0.0:8000"
+Así te aseguras de que puedas ver la aplicación desde el navegador.
+
+Ejecutar Migraciones
+Para crear las tablas en tu base de datos SQLite, ejecuta:
+
+bash
+Copiar
+Editar
+poetry run python manage.py migrate
+Esto aplicará todas las migraciones iniciales de Django.
+
+Crear una Aplicación para tu Lógica
+Si aún no tienes apps, crea una donde desarrollarás las funcionalidades de tu red social (por ejemplo, llamada "core"):
+
+bash
+Copiar
+Editar
+poetry run python manage.py startapp core
+Luego, abre el archivo django_project/settings.py y agrega 'core', en la lista de INSTALLED_APPS.
+
+Configurar las URLs
+Crea un archivo urls.py dentro de la carpeta de la app "core" (si aún no lo tienes) para definir las rutas de tu aplicación. Por ejemplo:
+
+python
+Copiar
+Editar
+# core/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+Luego, en el archivo django_project/urls.py, incluye las URLs de la app:
+
+python
+Copiar
+Editar
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('core.urls')),
+]
+Crear una Vista Inicial
+En core/views.py, define una vista simple para probar:
+
+python
+Copiar
+Editar
+# core/views.py
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("¡Hola! Bienvenido a tu red social con Django.")
+Iniciar el Servidor y Comenzar a Desarrollar
+Ahora, ejecuta el servidor:
+
+bash
+Copiar
+Editar
+poetry run python manage.py runserver 0.0.0.0:8000
+Abre la URL que te indique (normalmente http://0.0.0.0:8000) para ver tu mensaje de bienvenida.
+
+(Opcional) Crear un Superusuario
+Para acceder a la administración de Django, crea un superusuario con:
+
+bash
+Copiar
+Editar
+poetry run python manage.py createsuperuser

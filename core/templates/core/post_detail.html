@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>post</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-color: #001935;
+            --nav-bg: #ffffff10;
+            --text-color: #ffffff;
+            --accent-color: #00b8ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr 250px;
+            min-height: 100vh;
+        }
+
+        .left-nav, .right-nav {
+            background: var(--nav-bg);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-color);
+        }
+
+        .main-content {
+            padding: 20px;
+            width: 100%;
+            max-width: none;
+        }
+
+        .post {
+            background: var(--nav-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .post-content {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .post-image {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px 0;
+            border-top: 1px solid var(--nav-bg);
+        }
+
+        .action-btn {
+            background: var(--nav-bg);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-color);
+        }
+
+        .liked {
+            background: var(--accent-color);
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        .comment-form {
+            background: var(--nav-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .comment-input {
+            width: 100%;
+            background: #ffffff20;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            color: var(--text-color);
+            min-height: 60px;
+            margin-bottom: 10px;
+            resize: none;
+        }
+
+        .comment-submit {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment {
+            background: var(--nav-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-nav, .right-nav {
+                display: none;
+                background: #001935;
+                position: fixed;
+                bottom: 60px;
+                left: 0;
+                width: 100%;
+                height: auto;
+                max-height: 100vh;
+                z-index: 100;
+                border-top: 1px solid #ffffff20;
+            }
+
+            .left-nav.active, .right-nav.active {
+                display: block;
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 96%;
+                background: #001935;
+                padding: 10px;
+                justify-content: space-around;
+                z-index: 101;
+            }
+
+            .mobile-nav a {
+                color: var(--text-color);
+                text-decoration: none;
+                font-size: 24px;
+            }
+
+            .main-content {
+                margin-bottom: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="left-nav">
+            <a href="{% url 'home' %}" class="nav-item">
+                🏠 Casita
+            </a>
+            <a href="#" class="nav-item">
+                💬 Chat
+            </a>
+            <a href="{% url 'profile' username=request.user.username %}" class="nav-item">
+                👤 Perfil
+            </a>
+            <a href="{% url 'home' %}#post-box" class="nav-item">
+                ✏️ Postear
+            </a>
+        </nav>
+
+        <main class="main-content">
+            <article class="post">
+                <div class="post-header">
+                    <a href="{% url 'profile' username=post.user.username %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                        <img src="{{ post.user.avatar }}" alt="{{ post.user.username }}" class="avatar">
+                        <strong>{{ post.user.username }}</strong>
+                    </a>
+                </div>
+                <div class="post-content">
+                    {{ post.content }}
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                    {% endif %}
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
+                        ❤️ <span class="likes-count">{{ post.get_likes_count }}</span>
+                    </button>
+                    <button class="action-btn">🔄 Repost</button>
+                    <button class="action-btn">💬 {{ post.get_comments_count }}</button>
+                </div>
+            </article>
+
+            <div class="comments-section">
+                <form method="post" action="{% url 'add_comment' post.id %}" class="comment-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <textarea name="content" class="comment-input" placeholder="posteá un comentario..." required></textarea>
+                    <div class="image-upload" style="margin-bottom: 15px;">
+                        <label for="comment-image-input" style="color: var(--accent-color); cursor: pointer;">
+                            📷 Agregar imagen
+                        </label>
+                        <input id="comment-image-input" type="file" name="image" accept="image/*" style="display: none;">
+                        <span id="comment-file-name"></span>
+                    </div>
+                    <button type="submit" class="comment-submit">Comentar</button>
+                </form>
+
+                <h3 style="margin-bottom: 15px;">Comentarios</h3>
+                {% for comment in post.comments.all %}
+                <div class="comment">
+                    <div class="comment-header">
+                        <a href="{% url 'profile' username=comment.user.username %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                            <img src="{{ comment.user.avatar }}" alt="{{ comment.user.username }}" class="avatar">
+                            <strong>{{ comment.user.username }}</strong>
+                        </a>
+                    </div>
+                    <div class="post-content">
+                        {{ comment.content }}
+                        {% if comment.image %}
+                        <img src="{{ comment.image.url }}" alt="Comment image" class="post-image">
+                        {% endif %}
+                    </div>
+                    <div class="comment-actions">
+                        <button class="action-btn like-comment-btn {% if request.user in comment.likes.all %}liked{% endif %}" data-comment-id="{{ comment.id }}">
+                            ❤️ <span class="comment-likes-count">{{ comment.get_likes_count }}</span>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+
+        <aside class="right-nav">
+            <h3>Posters:</h3>
+            {% for user in users %}
+            <a href="{% url 'profile' username=user.username %}" class="nav-item" style="text-decoration: none;">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}" class="avatar" style="width: 30px; height: 30px;">
+                {{ user.username }}
+            </a>
+            {% endfor %}
+        </aside>
+    </div>
+
+    <nav class="mobile-nav">
+        <a href="{% url 'home' %}">🏠</a>
+        <a href="#">💬</a>
+        <a href="{% url 'profile' username=request.user.username %}">👤</a>
+        <a href="{% url 'home' %}#post-box">✏️</a>
+        <a href="#" onclick="toggleUsers(event)">👥</a>
+    </nav>
+
+    <script>
+        document.getElementById('comment-image-input').onchange = function() {
+            document.getElementById('comment-file-name').textContent = 
+                this.files[0] ? '📎 ' + this.files[0].name : '';
+        };
+
+        document.querySelectorAll('.like-comment-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const commentId = this.dataset.commentId;
+                fetch(`/comment/${commentId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const likesCount = this.querySelector('.comment-likes-count');
+                    likesCount.textContent = data.likes_count;
+                    this.classList.toggle('liked', data.liked);
+                });
+            });
+        });
+
+        function toggleUsers(e) {
+            e.preventDefault();
+            const rightNav = document.querySelector('.right-nav');
+            rightNav.classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeBtn = document.querySelector('.like-btn');
+            if (likeBtn) {
+                likeBtn.addEventListener('click', function() {
+                    const postId = this.dataset.postId;
+                    fetch(`/post/${postId}/like/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const likesCount = this.querySelector('.likes-count');
+                        likesCount.textContent = data.likes_count;
+                        this.classList.toggle('liked', data.liked);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

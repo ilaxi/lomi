@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ profile_user.username }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-color: #001935;
+            --nav-bg: #ffffff10;
+            --text-color: #ffffff;
+            --accent-color: #00b8ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr 250px;
+            min-height: 100vh;
+        }
+
+        .left-nav, .right-nav {
+            background: var(--nav-bg);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-color);
+        }
+
+        .main-content {
+            padding: 20px;
+            width: 100%;
+        }
+
+        .profile-header {
+            background: var(--nav-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .profile-header-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        .profile-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .profile-name-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .profile-bio {
+            font-size: 0.95em;
+            line-height: 1.4;
+            word-wrap: break-word;
+            margin: 8px 0;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+            color: #8899aa;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .chat-button {
+            background: #00b74a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .follow-button {
+            background: #00b74a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .unfollow-button {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .post {
+            background: var(--nav-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .post-content {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .post-image {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px 0;
+            border-top: 1px solid var(--nav-bg);
+        }
+
+        .action-btn {
+            background: var(--nav-bg);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-color);
+        }
+
+        .liked {
+            background: var(--accent-color);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--accent-color);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #intersection-observer {
+            height: 10px;
+            margin-top: -10px;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none !important;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                padding: 12px;
+            }
+
+            .profile-header-top {
+                gap: 12px;
+            }
+
+            .profile-avatar {
+                width: 75px;
+                height: 75px;
+            }
+
+            .profile-info {
+                gap: 8px;
+            }
+
+            .profile-name-section {
+                font-size: 0.9em;
+            }
+
+            .profile-bio {
+                font-size: 0.85em;
+                margin: 6px 0;
+                max-width: calc(100vw - 110px);
+            }
+
+            .profile-stats {
+                font-size: 0.8em;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .profile-actions {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .chat-button, .follow-button, .unfollow-button {
+                font-size: 14px;
+                padding: 8px 15px;
+                flex: 1;
+                text-align: center;
+                min-width: 100px;
+            }
+
+            .left-nav, .right-nav {
+                display: none;
+                position: fixed;
+                bottom: 60px;
+                left: 0;
+                width: 100%;
+                height: auto;
+                max-height: 100vh;
+                z-index: 100;
+                background: #001935;
+            }
+
+            .left-nav.active, .right-nav.active {
+                display: block;
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: #001935;
+                padding: 10px;
+                justify-content: space-around;
+                z-index: 101;
+                border-top: 1px solid #ffffff20;
+            }
+
+            .mobile-nav a {
+                color: var(--text-color);
+                text-decoration: none;
+                font-size: 24px;
+            }
+
+            .main-content {
+                margin-bottom: 70px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+    <div class="container">
+        <nav class="left-nav">
+            <a href="{% url 'home' %}" class="nav-item">
+                🏠 Casita
+            </a>
+            <a href="#" class="nav-item">
+                💬 Chat
+            </a>
+            <a href="{% url 'profile' username=request.user.username %}" class="nav-item">
+                👤 Perfil
+            </a>
+            <a href="{% url 'home' %}" class="nav-item">
+                ✏️ Postear
+            </a>
+        </nav>
+
+        <main class="main-content">
+            <div class="profile-header">
+                <div class="profile-header-top">
+                    {% if is_own_profile %}
+                    <label for="avatar-input" style="cursor: pointer;">
+                        <img src="{{ profile_user.avatar }}" alt="{{ profile_user.username }}" class="profile-avatar">
+                    </label>
+                    <form id="avatar-form" method="post" enctype="multipart/form-data" style="display: none;">
+                        {% csrf_token %}
+                        <input id="avatar-input" type="file" name="avatar" accept="image/*" onchange="this.form.submit()">
+                    </form>
+                    {% else %}
+                    <img src="{{ profile_user.avatar }}" alt="{{ profile_user.username }}" class="profile-avatar">
+                    {% endif %}
+
+                    <div class="profile-info">
+                        <div class="profile-name-section">
+                            <h2>{{ profile_user.username }}</h2>
+                            {% if is_own_profile %}
+                            <button onclick="toggleEditUsername()" style="background: none; border: none; cursor: pointer; font-size: 20px;">✏️</button>
+                            {% endif %}
+                        </div>
+
+                        <div class="profile-bio">
+                            <span>{{ profile_user.short_bio }}</span>
+                            {% if is_own_profile %}
+                            <button onclick="toggleEditBio()" style="background: none; border: none; cursor: pointer; font-size: 20px;">✏️</button>
+                            {% endif %}
+                        </div>
+
+                        <div class="profile-stats">
+                            <span>Seguidores: {{ profile_user.followers.count|default:"0" }}</span>
+                            <span>Siguiendo: {{ profile_user.following.count|default:"0" }}</span>
+                        </div>
+
+                        {% if not is_own_profile %}
+                        <div class="profile-actions">
+                            <button class="chat-button">escribir</button>
+                            <button id="followButton" class="follow-button" data-username="{{ profile_user.username }}">
+                                {% if request.user in profile_user.followers.all %}Dejar de seguir{% else %}Seguir{% endif %}
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if is_own_profile %}
+            <form id="bio-form" method="post" style="display: none; margin: 20px 0;">
+                {% csrf_token %}
+                <input type="text" name="short_bio" maxlength="60" placeholder="Descripción corta (max 60 caracteres)" required>
+                <button type="submit" style="background: #00b74a; color: white; border: none; padding: 5px 10px; border-radius: 5px;">Guardar</button>
+                <button type="button" onclick="toggleEditBio()" style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px;">Cancelar</button>
+            </form>
+            <form id="username-form" method="post" style="display: none; margin: 20px 0;">
+                {% csrf_token %}
+                <input type="text" name="new_username" placeholder="Nuevo nombre de usuario" required>
+                <button type="submit" style="background: #00b74a; color: white; border: none; padding: 5px 10px; border-radius: 5px;">Guardar</button>
+                <button type="button" onclick="toggleEditUsername()" style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px;">Cancelar</button>
+            </form>
+            {% endif %}
+
+            <h3 style="margin: 20px 0;">Posts</h3>
+
+            <div id="posts-container">
+                {% include 'core/posts_list.html' %}
+            </div>
+
+            {% if has_next %}
+            <div id="loading" style="display: none; text-align: center; padding: 20px;">
+                <div class="loading-spinner"></div>
+            </div>
+            <div id="intersection-observer"></div>
+            {% endif %}
+        </main>
+
+        <aside class="right-nav">
+            <h3>Posters:</h3>
+            {% for user in users %}
+            <a href="{% url 'profile' username=user.username %}" class="nav-item" style="text-decoration: none;">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}" class="avatar" style="width: 30px; height: 30px;">
+                {{ user.username }}
+            </a>
+            {% endfor %}
+        </aside>
+    </div>
+
+    <nav class="mobile-nav">
+        <a href="{% url 'home' %}">🏠</a>
+        <a href="#">💬</a>
+        <a href="{% url 'profile' username=request.user.username %}">👤</a>
+        <a href="{% url 'home' %}">✏️</a>
+        <a href="#" onclick="toggleUsers(event)">👥</a>
+    </nav>
+
+    <div class="followers-modal" id="followersModal">
+        <div class="followers-content">
+            <h3>Seguidores de {{ profile_user.username }}</h3>
+            <ul class="followers-list" id="followersList"></ul>
+            <button class="close-button" onclick="closeFollowersModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let loading = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const postsContainer = document.getElementById('posts-container');
+            const loadingElement = document.getElementById('loading');
+            const observer = document.getElementById('intersection-observer');
+
+            if (observer) {
+                const intersectionObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting && !loading) {
+                        loadMorePosts();
+                    }
+                });
+
+                intersectionObserver.observe(observer);
+            }
+
+            function loadMorePosts() {
+                if (loading) return;
+                loading = true;
+                currentPage++;
+                loadingElement.style.display = 'block';
+
+                fetch(`?page=${currentPage}`, {
+                    headers: {
+                        'HX-Request': 'true'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    if (html.trim()) {
+                        postsContainer.insertAdjacentHTML('beforeend', html);
+                        initializeLikeButtons(postsContainer.lastElementChild);
+                    } else {
+                        observer.remove();
+                    }
+                })
+                .finally(() => {
+                    loading = false;
+                    loadingElement.style.display = 'none';
+                });
+            }
+
+            function initializeLikeButtons(container) {
+                container.querySelectorAll('.like-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const postId = this.dataset.postId;
+                        fetch(`/post/${postId}/like/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': document.querySelector('#csrfToken').value
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            const likesCount = this.querySelector('.likes-count');
+                            likesCount.textContent = data.likes_count;
+                            this.classList.toggle('liked', data.liked);
+                        });
+                    });
+                });
+            }
+
+            // Initialize like buttons for initial posts
+            initializeLikeButtons(postsContainer);
+        });
+
+        function toggleUsers(e) {
+            e.preventDefault();
+            const rightNav = document.querySelector('.right-nav');
+            rightNav.classList.toggle('active');
+        }
+
+        function toggleEditUsername() {
+            const form = document.getElementById('username-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleEditBio() {
+            const form = document.getElementById('bio-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        const followButton = document.getElementById('followButton');
+        if (followButton) {
+            followButton.addEventListener('click', handleFollow);
+        }
+
+        function handleFollow(e) {
+            e.preventDefault();
+            const button = this;
+            const username = button.dataset.username;
+
+            fetch(`/follow/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.getElementById('csrfToken').value
+                }
+            }).then(response => response.text())
+              .then(() => {
+                const isFollowing = button.textContent.includes('Dejar');
+                button.textContent = isFollowing ? 'Seguir' : 'Dejar de seguir';
+                button.classList.toggle('follow-button');
+                button.classList.toggle('unfollow-button');
+                
+                const followerCount = document.querySelector('.profile-stats span:first-child');
+                let count = parseInt(followerCount.textContent.match(/\d+/)[0]);
+                count = isFollowing ? count - 1 : count + 1;
+                followerCount.textContent = `Seguidores: ${count}`;
+            });
+        }
+
+        document.querySelector('.profile-stats span:first-child').addEventListener('click', function(e) {
+            e.preventDefault();
+            openFollowersModal();
+        });
+
+        function openFollowersModal() {
+            const modal = document.getElementById('followersModal');
+            modal.style.display = 'flex';
+            fetch(`/api/followers/{{ profile_user.id }}/`)
+                .then(response => response.json())
+                .then(data => {
+                    const followersList = document.getElementById('followersList');
+                    followersList.innerHTML = '';
+                    data.followers.forEach(follower => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<a href="/profile/${follower.username}" class="follower-item">${follower.username}</a>`;
+                        followersList.appendChild(listItem);
+                    });
+                });
+        }
+
+        function closeFollowersModal() {
+            document.getElementById('followersModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
