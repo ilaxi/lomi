@@ -14,6 +14,10 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    preview_title = models.CharField(max_length=255, blank=True, null=True)
+    preview_image = models.URLField(blank=True, null=True)
+    preview_url = models.URLField(blank=True, null=True)
+    preview_domain = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -32,10 +36,13 @@ class Post(models.Model):
         minutes = int(diff.total_seconds() / 60)
         if minutes < 60:
             return f'hace {minutes} m'
-            
+        
         hours = int(minutes / 60)
-        return f'hace {hours} h'
-
+        if hours < 24:
+            return f'hace {hours} h'
+        days = int(hours / 24)
+        return f'hace {days} d'
+    
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -43,6 +50,27 @@ class Comment(models.Model):
     image = models.ImageField(upload_to='comments/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_comments', blank=True)
+    preview_title = models.CharField(max_length=255, blank=True, null=True)
+    preview_image = models.URLField(blank=True, null=True)
+    preview_url = models.URLField(blank=True, null=True)
+    preview_domain = models.CharField(max_length=255, blank=True, null=True)
+
+    def get_relative_time(self):
+        from django.utils import timezone
+        now = timezone.now()
+        diff = now - self.created_at
+        
+        minutes = int(diff.total_seconds() / 60)
+        if minutes < 60:
+            return f'hace {minutes} m'
+            
+        hours = int(minutes / 60)
+        if hours < 24:
+            return f'hace {hours} h'
+        
+        days = int(hours / 24)
+        return f'hace {days} d'
+
 
     class Meta:
         ordering = ['created_at']

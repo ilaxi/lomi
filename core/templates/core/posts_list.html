@@ -7,12 +7,12 @@
                     <img src="{{ post.user.avatar }}" alt="{{ post.user.username }}" class="avatar">
                     <strong>{{ post.user.username }}</strong>
                 </a>
-                <span style="margin-left: 10px; font-size: 0.8em; color: #8899aa;">{{ post.get_relative_time }}</span>
+                <span style="margin-left: 10px; font-size: 0.8em; color: #a7b0b99a;">{{ post.get_relative_time }}</span>
             </div>
             {% if request.user == post.user %}
             <div class="post-menu" style="position: relative;">
                 <button onclick="togglePostMenu({{ post.id }})" class="menu-btn" style="background: none; border: none; color: var(--text-color); cursor: pointer; font-size: 20px;">⋮</button>
-                <div id="postMenu{{ post.id }}" class="post-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; background: var(--nav-bg); border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.0); z-index: 1000;">
+                <div id="postMenu{{ post.id }}" class="post-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; background:rgba(38, 38, 38, 1);; border-radius: 3px; box-shadow: 0 5px 5px rgba(0,0,0,0.0); z-index: 1000;">
                     <button onclick="editPost({{ post.id }})" style="display: block; width: 100%; padding: 8px 15px; border: none; background: none; color: var(--text-color); cursor: pointer; text-align: left;">Editar</button>
                     <button onclick="deletePost({{ post.id }})" style="display: block; width: 100%; padding: 8px 15px; border: none; background: none; color: #ff4444; cursor: pointer; text-align: left;">Borrar</button>
                 </div>
@@ -25,7 +25,23 @@
         {% if post.image %}
         <img src="{{ post.image.url }}" alt="Post image" class="post-image">
         {% endif %}
-    </div>
+
+        {% if post.preview_url %}
+        <a href="{{ post.preview_url }}" target="_blank" class="link-preview">
+            <div class="preview-card">
+                {% if post.preview_image %}
+                <img src="{{ post.preview_image }}" alt="Preview" class="preview-image">
+                {% endif %}
+                <div class="preview-info">
+                    <h4>{{ post.preview_title }}</h4>
+                    {% if post.preview_domain %}
+                    <span style="font-size: 12px; color: #888;">{{ post.preview_domain }}</span>
+                    {% endif %}
+            </div>
+        </div>
+    </a>
+    {% endif %} 
+</div>
     <div class="post-actions">
         <button class="action-btn like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
             ❤️ <span class="likes-count">{{ post.get_likes_count }}</span>

@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --bg-color: #001935;
-            --nav-bg: #ffffff10;
+            --bg-color: rgba(26, 26, 26, 1);
+            --nav-bg: rgba(13, 13, 13, 1);
             --text-color: #ffffff;
-            --accent-color: #00b8ff;
+            --accent-color: rgba(26, 26, 26, 1);
         }
 
         * {
@@ -25,8 +25,10 @@
 
         .container {
             display: grid;
-            grid-template-columns: 250px 1fr 250px;
+            grid-template-columns: 327px 1fr 363px;
             min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .left-nav, .right-nav {
@@ -43,44 +45,68 @@
             align-items: center;
             padding: 10px;
             color: var(--text-color);
+            font-size: 1.36rem;
             text-decoration: none;
             margin: 5px 0;
             border-radius: 5px;
         }
+        
 
         .nav-item:hover {
             background: var(--accent-color);
         }
 
         .main-content {
+            max-width: 683px;
+            margin: 0 auto;
             padding: 20px;
             width: 100%;
-            max-width: none;
         }
 
         .post-box {
             background: var(--nav-bg);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 5px;
             margin-bottom: 20px;
             width: 100%;
         }
 
         .image-upload {
-            margin: 10px 0;
-            color: var(--accent-color);
+            margin: 6px 0;
+            color: #ddd8d8;
             cursor: pointer;
+        }
+
+        #file-name {
+            margin-left: 10px;
+            font-size: 0.6em;
+            color: var(--text-color);
+        }
+
+        #removeImageButton {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+            padding: 2px 6px;
+        }
+
+        #preview-container {
+            margin-top: 10px;
+            display: none;
+        }
+
+        #preview-container img {
+            max-width: 100%;
+            border-radius: 5px;
         }
 
         .image-upload label {
             cursor: pointer;
         }
 
-        #file-name {
-            margin-left: 10px;
-            font-size: 0.9em;
-            color: var(--text-color);
-        }
 
         .post-form {
             display: flex;
@@ -89,7 +115,7 @@
         }
 
         .post-input {
-            background: #ffffff20;
+            background: rgb(37, 37, 37);
             border: none;
             padding: 10px;
             border-radius: 5px;
@@ -99,18 +125,24 @@
         }
 
         .post-button {
-            background: #00b74a;
-            color: white;
+            background: #ccccce;
+            color: rgb(0, 0, 0);
             border: none;
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background 0.2s ease;
+            
+        }
+
+        .post-button:hover {
+            transform: scale(1.009);
         }
 
         .post {
             background: var(--nav-bg);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 5px;
             margin-bottom: 15px;
             width: 100%;
         }
@@ -139,8 +171,11 @@
 
         .post-image {
             max-width: 100%;
+            height: auto;
+            max-height: auto;
+            object-fit: contain;
+            margin: 10px 0;
             border-radius: 5px;
-            margin-top: 10px;
         }
 
         .post-actions {
@@ -148,11 +183,11 @@
             gap: 10px;
             margin-top: 15px;
             padding: 10px 0;
-            border-top: 1px solid var(--nav-bg);
+            border-top: 1px solid #9ea2a71f;
         }
 
         .action-btn {
-            background: var(--nav-bg);
+            background: #2d2d2e17;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
@@ -176,7 +211,7 @@
             display: inline-block;
             width: 30px;
             height: 30px;
-            border: 3px solid var(--accent-color);
+            border: 3px solid #ffffff;
             border-radius: 50%;
             border-top-color: transparent;
             animation: spin 1s linear infinite;
@@ -198,6 +233,62 @@
             display: none;
         }
 
+        .link-preview {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: opacity 0.2s;
+        }
+
+        .preview-card img {
+            width: 100%;
+            height: 100px;
+            height: auto;
+            object-fit: cover;
+            max-height: 363px;
+        }
+
+        .preview-info {
+            padding: 12px;
+        }
+
+        .preview-info h4 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        
+        
+
+        
+        
+        @media (min-width: 1600px) {
+            .container {
+                grid-template-columns: 350px 1fr 350px;
+            }
+
+            .left-nav, .right-nav {
+                width: 350px;
+            }
+
+            .main-content {
+                max-width: 700px;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
@@ -205,7 +296,7 @@
 
             .left-nav, .right-nav {
                 display: none;
-                background: #001935;
+                background: rgba(13, 13, 13, 1);
                 position: fixed;
                 bottom: 60px;
                 left: 0;
@@ -225,8 +316,8 @@
                 position: fixed;
                 bottom: 0;
                 left: 0;
-                width: 96%;
-                background: #001935;
+                width: 100%;
+                background: rgba(13, 13, 13, 1);
                 padding: 10px;
                 justify-content: space-around;
                 z-index: 101;
@@ -265,13 +356,17 @@
             <div id="post-box" class="post-box">
                 <form method="post" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <textarea name="content" class="post-input" placeholder="postea algo dale"></textarea>
+                    <textarea name="content" class="post-input" placeholder="postea algo dale..."></textarea>
                     <div class="image-upload">
                         <label for="image-input">
                             📷 Agregar imagen
                         </label>
                         <input id="image-input" type="file" name="image" accept="image/*" style="display: none;">
                         <span id="file-name"></span>
+                        <button type="button" id="removeImageButton" style="display: none;">X</button>
+                    </div>
+                    <div id="preview-container">
+                        <img id="preview" src="#" alt="Previsualización de la imagen">
                     </div>
                     <button type="submit" class="post-button">Postear</button>
                 </form>
@@ -301,14 +396,52 @@
     </div>
 
     <nav class="mobile-nav">
-        <a href="{% url 'home' %}">🏠</a>
+        <a href="{% url 'home' %}"> <svg fill="#ccccce" width="30px" height="35px" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg"><path d="M12 3s-6.186 5.34-9.643 8.232c-.203.184-.357.452-.357.768 0 .553.447 1 1 1h2v7c0 .553.447 1 1 1h3c.553 0 1-.448 1-1v-4h4v4c0 .552.447 1 1 1h3c.553 0 1-.447 1-1v-7h2c.553 0 1-.447 1-1 0-.316-.154-.584-.383-.768-3.433-2.892-9.617-8.232-9.617-8.232z"/></svg></a><?xml version="1.0" encoding="utf-8"?>
+        
         <a href="#">💬</a>
+
         <a href="{% url 'profile' username=request.user.username %}">👤</a>
+
         <a href="#post-box">✏️</a>
+
         <a href="#" onclick="toggleUsers(event)">👥</a>
     </nav>
 
     <script>
+        document.getElementById('image-input').addEventListener('change', function(event) {
+            const input = event.target;
+            const file = input.files[0];
+            const fileNameSpan = document.getElementById('file-name');
+            const previewImage = document.getElementById('preview');
+            const previewContainer = document.getElementById('preview-container');
+            const removeButton = document.getElementById('removeImageButton');
+            if (file) {
+                fileNameSpan.textContent = '📎 ' + file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+                removeButton.style.display = 'inline-block';
+            } else {
+                fileNameSpan.textContent = '';
+                previewContainer.style.display = 'none';
+                previewImage.src = '#';
+                removeButton.style.display = 'none';
+            }
+        });
+
+        document.getElementById('removeImageButton').addEventListener('click', function() {
+            const imageInput = document.getElementById('image-input');
+            imageInput.value = '';
+            document.getElementById('file-name').textContent = '';
+            document.getElementById('preview-container').style.display = 'none';
+            document.getElementById('preview').src = '#';
+            this.style.display = 'none';
+        });
+                
+
         document.getElementById('image-input').onchange = function() {
             document.getElementById('file-name').textContent = 
                 this.files[0] ? '📎 ' + this.files[0].name : '';
@@ -325,7 +458,7 @@
             postButton.disabled = true;
             setTimeout(() => {
                 postButton.disabled = false;
-            }, 4000);
+            }, 6000);
         });
 
         function toggleUsers(e) {
@@ -353,30 +486,40 @@
             }
 
             function loadMorePosts() {
-                if (loading) return;
-                loading = true;
-                currentPage++;
-                loadingElement.style.display = 'block';
+    if (loading) return;
+    loading = true;
+    currentPage++;
+    loadingElement.style.display = 'block';
 
-                fetch(`?page=${currentPage}`, {
-                    headers: {
-                        'HX-Request': 'true'
-                    }
-                })
-                .then(response => response.text())
-                .then(html => {
-                    if (html.trim()) {
-                        postsContainer.insertAdjacentHTML('beforeend', html);
-                        initializeLikeButtons(postsContainer.lastElementChild);
-                    } else {
-                        observer.remove();
-                    }
-                })
-                .finally(() => {
-                    loading = false;
-                    loadingElement.style.display = 'none';
-                });
-            }
+    fetch(`?page=${currentPage}`, {
+        headers: {
+            'HX-Request': 'true'
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        if (html.trim()) {
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = html;
+            postsContainer.appendChild(tempContainer);
+            initializeLikeButtons(tempContainer);
+        } else {
+            observer.disconnect();
+            loadingElement.style.display = 'none';
+            const endMessage = document.createElement('div');
+            endMessage.className = 'text-center text-gray-500 py-4';
+            endMessage.textContent = 'No hay más posts';
+            postsContainer.appendChild(endMessage);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        loading = false;
+        loadingElement.style.display = 'none';
+    });
+}
 
             function initializeLikeButtons(container) {
                 container.querySelectorAll('.like-btn').forEach(button => {
@@ -400,6 +543,10 @@
 
             initializeLikeButtons(postsContainer);
         });
+
+        
+
+        
     </script>
 </body>
 </html>

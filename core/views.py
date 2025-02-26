@@ -14,19 +14,56 @@ def login_view(request):
 
         try:
             user = User.objects.get(username=username)
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                return render(request, 'core/login.html', {'error': 'si sos nuevo lo que pasa es que ese user ya existe, si te queres logear pasa que te equivocaste de contraseña manin'})
         except User.DoesNotExist:
-            
-            user = User.objects.create_user(username=username, password=password)
-            login(request, user)
-            return redirect('home')
-
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-
+            try:
+                user = User.objects.create_user(username=username, password=password)
+                login(request, user)
+                return redirect('home')
+            except:
+                return render(request, 'core/login.html', {'error': 'si sos nuevo lo que pasa es que ese user ya existe, si te queres logear pasa que te equivocaste de contraseña manin'})
     return render(request, 'core/login.html')
 
+
+import re
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse
+
+def get_preview_data(url):
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers, timeout=5)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        domain = urlparse(url).netloc.replace('www.', '')
+
+        if 'youtube.com' in url or 'youtu.be' in url:
+            title = soup.find('meta', property='og:title')
+            image = soup.find('meta', property='og:image')
+            return {
+                'title': title['content'] if title else None,
+                'image': image['content'] if image else None,
+                'url': url,
+                'domain': domain
+            }
+        
+        title = soup.find('meta', property='og:title') or soup.find('title')
+        image = soup.find('meta', property='og:image')
+
+        return {
+            'title': title['content'] if title and 'content' in title.attrs else title.text if title else None,
+            'image': image['content'] if image else None,
+            'url': url,
+            'domain': domain
+        }
+    except:
+        return None
+    
 from django.core.paginator import Paginator
 
 @login_required
@@ -35,11 +72,22 @@ def home(request):
         content = request.POST.get('content', '')
         image = request.FILES.get('image')
         if content or image:
-            Post.objects.create(user=request.user, content=content, image=image)
+            urls = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', content)
+            clean_content = re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', '', content).strip()
+            post = Post(user=request.user, content=clean_content, image=image)
+            if urls:
+                preview_data = get_preview_data(urls[0])
+                if preview_data:
+                    post.preview_title = preview_data['title']
+                    post.preview_image = preview_data['image']
+                    post.preview_url = preview_data['url']
+                    post.preview_domain = preview_data['domain']
+
+            post.save()
             return redirect('home')
 
     posts = Post.objects.all()
-    paginator = Paginator(posts, 20)
+    paginator = Paginator(posts, 10)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
     
@@ -104,15 +152,28 @@ def like_post(request, post_id):
 def add_comment(request, post_id):
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
-        content = request.POST.get('content')
+        content = request.POST.get('content', '')
         image = request.FILES.get('image')
+
         if content or image:
-            Comment.objects.create(
+            urls = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', content)
+            clean_content = re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', '', content).strip()
+            comment = Comment(
                 post=post,
                 user=request.user,
-                content=content,
+                content=clean_content,
                 image=image
             )
+
+            if urls:
+                preview_data = get_preview_data(urls[0])
+                if preview_data:
+                    comment.preview_title = preview_data['title']
+                    comment.preview_image = preview_data['image']
+                    comment.preview_url = preview_data['url']
+                    comment.preview_domain = preview_data['domain']
+
+            comment.save()
         return redirect('post_detail', post_id=post_id)
     return HttpResponseNotAllowed(['POST'])
 
@@ -205,3 +266,13 @@ def delete_post(request, post_id):
             post.delete()
         return redirect('home')
     return HttpResponseNotAllowed(['POST'])
+
+
+
+
+
+
+
+
+
+

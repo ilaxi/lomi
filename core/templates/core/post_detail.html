@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --bg-color: #001935;
-            --nav-bg: #ffffff10;
+            --bg-color: rgba(26, 26, 26, 1);
+            --nav-bg: rgba(13, 13, 13, 1);
             --text-color: #ffffff;
-            --accent-color: #00b8ff;
+            --accent-color: rgba(26, 26, 26, 1);
         }
 
         * {
@@ -25,8 +25,10 @@
 
         .container {
             display: grid;
-            grid-template-columns: 250px 1fr 250px;
+            grid-template-columns: 327px 1fr 363px;
             min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .left-nav, .right-nav {
@@ -43,6 +45,7 @@
             align-items: center;
             padding: 10px;
             color: var(--text-color);
+            font-size: 1.36rem;
             text-decoration: none;
             margin: 5px 0;
             border-radius: 5px;
@@ -53,9 +56,10 @@
         }
 
         .main-content {
+            max-width: 683px;
+            margin: 0 auto;
             padding: 20px;
             width: 100%;
-            max-width: none;
         }
 
         .post {
@@ -79,6 +83,32 @@
             margin-right: 10px;
         }
 
+        #file-name {
+            margin-left: 10px;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+
+        #removeImageButton {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+            padding: 2px 6px;
+        }
+
+        #preview-container {
+            margin-top: 10px;
+            display: none;
+        }
+
+        #preview-container img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
         .post-content {
             margin: 10px 0;
             display: flex;
@@ -90,8 +120,11 @@
 
         .post-image {
             max-width: 100%;
+            height: auto;
+            max-height: auto;
+            object-fit: contain;
+            margin: 10px 0;
             border-radius: 5px;
-            margin-top: 10px;
         }
 
         .post-actions {
@@ -99,11 +132,11 @@
             gap: 10px;
             margin-top: 15px;
             padding: 10px 0;
-            border-top: 1px solid var(--nav-bg);
+            border-top: 1px solid #9ea2a71f;
         }
 
         .action-btn {
-            background: var(--nav-bg);
+            background: #2d2d2e17;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
@@ -135,7 +168,7 @@
 
         .comment-input {
             width: 100%;
-            background: #ffffff20;
+            background: rgb(37, 37, 37);
             border: none;
             padding: 10px;
             border-radius: 5px;
@@ -146,12 +179,17 @@
         }
 
         .comment-submit {
-            background: var(--accent-color);
-            color: white;
+            background: #ccccce;
+            color: rgb(0, 0, 0);
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .comment-submit:hover {
+            transform: scale(1.02);
         }
 
         .comment {
@@ -171,6 +209,75 @@
             display: none;
         }
 
+        .link-preview {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: opacity 0.2s;
+        }
+
+        .preview-card img {
+            width: 100%;
+            height: 250px;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .preview-info {
+            padding: 12px;
+        }
+
+        .preview-info h4 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        #comment-preview-container {
+            margin-top: 10px;
+            display: none;
+            max-width: 100%;
+        }
+        #comment-preview-container img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        #comment-removeImageButton {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+            padding: 2px 6px;
+        }
+
+        @media (min-width: 1600px) {
+            .container {
+                grid-template-columns: 350px 1fr 350px;
+            }
+
+            .left-nav, .right-nav {
+                width: 350px;
+            }
+
+            .main-content {
+                max-width: 700px;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
@@ -178,7 +285,7 @@
 
             .left-nav, .right-nav {
                 display: none;
-                background: #001935;
+                background: rgba(13, 13, 13, 1);
                 position: fixed;
                 bottom: 60px;
                 left: 0;
@@ -198,9 +305,9 @@
                 position: fixed;
                 bottom: 0;
                 left: 0;
-                width: 96%;
-                background: #001935;
-                padding: 10px;
+                width: 100%;
+                background: rgba(13, 13, 13, 1);
+                padding: 11px;
                 justify-content: space-around;
                 z-index: 101;
             }
@@ -241,11 +348,25 @@
                         <img src="{{ post.user.avatar }}" alt="{{ post.user.username }}" class="avatar">
                         <strong>{{ post.user.username }}</strong>
                     </a>
+                    <span style="margin-left: 10px; font-size: 0.8em; color: #a7b0b99a;">{{ post.get_relative_time }}</span>
                 </div>
                 <div class="post-content">
                     {{ post.content }}
                     {% if post.image %}
                     <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                    {% endif %}
+
+                    {% if post.preview_url %}
+                    <a href="{{ post.preview_url }}" target="_blank" class="link-preview">
+                        <div class="preview-card">
+                            {% if post.preview_image %}
+                            <img src="{{ post.preview_image }}" alt="Preview" class="preview-image">
+                            {% endif %}
+                            <div class="preview-info">
+                                <h4>{{ post.preview_title }}</h4>
+                            </div>
+                        </div>
+                    </a>
                     {% endif %}
                 </div>
                 <div class="post-actions">
@@ -258,15 +379,19 @@
             </article>
 
             <div class="comments-section">
-                <form method="post" action="{% url 'add_comment' post.id %}" class="comment-form" enctype="multipart/form-data">
+                <form method="post" action="{% url 'add_comment' post.id %}" class="comment-form" enctype="multipart/form-data" onsubmit="return validateForm(event)">
                     {% csrf_token %}
-                    <textarea name="content" class="comment-input" placeholder="posteá un comentario..." required></textarea>
+                    <textarea name="content" class="comment-input" placeholder="posteá un comentario..."></textarea>
                     <div class="image-upload" style="margin-bottom: 15px;">
-                        <label for="comment-image-input" style="color: var(--accent-color); cursor: pointer;">
+                        <label for="comment-image-input" style="cursor: pointer; display: inline-block; margin-bottom: 8px;">
                             📷 Agregar imagen
                         </label>
                         <input id="comment-image-input" type="file" name="image" accept="image/*" style="display: none;">
                         <span id="comment-file-name"></span>
+                        <button type="button" id="comment-removeImageButton" style="display: none;">X</button>
+                    </div>
+                    <div id="comment-preview-container" style="margin-bottom: 15px; display: none;">
+                        <img id="comment-preview" src="#" alt="Previsualización de la imagen">
                     </div>
                     <button type="submit" class="comment-submit">Comentar</button>
                 </form>
@@ -279,11 +404,28 @@
                             <img src="{{ comment.user.avatar }}" alt="{{ comment.user.username }}" class="avatar">
                             <strong>{{ comment.user.username }}</strong>
                         </a>
+                        <span style="margin-left: 10px; font-size: 0.8em; color: #a7b0b99a;">{{ comment.get_relative_time }}</span>
                     </div>
                     <div class="post-content">
                         {{ comment.content }}
                         {% if comment.image %}
                         <img src="{{ comment.image.url }}" alt="Comment image" class="post-image">
+                        {% endif %}
+
+                        {% if comment.preview_url %}
+                        <a href="{{ comment.preview_url }}" target="_blank" class="link-preview">
+                            <div class="preview-card">
+                                {% if comment.preview_image %}
+                                <img src="{{ comment.preview_image }}" alt="Preview" class="preview-image">
+                                {% endif %}
+                                <div class="preview-info">
+                                    <h4>{{ comment.preview_title }}</h4>
+                                    {% if comment.preview_domain %} 
+                                    <span style="font-size: 12px; color: #888;">{{ comment.preview_domain }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
                         {% endif %}
                     </div>
                     <div class="comment-actions">
@@ -295,7 +437,6 @@
                 {% endfor %}
             </div>
         </main>
-
         <aside class="right-nav">
             <h3>Posters:</h3>
             {% for user in users %}
@@ -308,7 +449,7 @@
     </div>
 
     <nav class="mobile-nav">
-        <a href="{% url 'home' %}">🏠</a>
+        <a href="{% url 'home' %}"> <svg fill="#ccccce" width="30px" height="35px" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg"><path d="M12 3s-6.186 5.34-9.643 8.232c-.203.184-.357.452-.357.768 0 .553.447 1 1 1h2v7c0 .553.447 1 1 1h3c.553 0 1-.448 1-1v-4h4v4c0 .552.447 1 1 1h3c.553 0 1-.447 1-1v-7h2c.553 0 1-.447 1-1 0-.316-.154-.584-.383-.768-3.433-2.892-9.617-8.232-9.617-8.232z"/></svg></a>
         <a href="#">💬</a>
         <a href="{% url 'profile' username=request.user.username %}">👤</a>
         <a href="{% url 'home' %}#post-box">✏️</a>
@@ -316,11 +457,40 @@
     </nav>
 
     <script>
-        document.getElementById('comment-image-input').onchange = function() {
-            document.getElementById('comment-file-name').textContent = 
-                this.files[0] ? '📎 ' + this.files[0].name : '';
-        };
+        document.getElementById('comment-image-input').addEventListener('change', function(event) {
+            const input = event.target;
+            const file = input.files[0];
+            const fileNameSpan = document.getElementById('comment-file-name');
+            const previewImage = document.getElementById('comment-preview');
+            const previewContainer = document.getElementById('comment-preview-container');
+            const removeButton = document.getElementById('comment-removeImageButton');
+            
+            if (file) {
+                fileNameSpan.textContent = '📎 ' + file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+                removeButton.style.display = 'inline-block';
+            } else {
+                fileNameSpan.textContent = '';
+                previewContainer.style.display = 'none';
+                previewImage.src = '#';
+                removeButton.style.display = 'none';
+            }
+        });
 
+        document.getElementById('comment-removeImageButton').addEventListener('click', function() {
+            const imageInput = document.getElementById('comment-image-input');
+            imageInput.value = '';
+            document.getElementById('comment-file-name').textContent = '';
+            document.getElementById('comment-preview-container').style.display = 'none';
+            document.getElementById('comment-preview').src = '#';
+            this.style.display = 'none';
+        });
+                
         document.querySelectorAll('.like-comment-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const commentId = this.dataset.commentId;
@@ -365,6 +535,17 @@
                 });
             }
         });
+
+        function validateForm(event) {
+            const content = document.querySelector('.comment-input').value.trim();
+            const image = document.querySelector('#comment-image-input').files[0];
+            
+            if (!content && !image) {
+                alert('Debes agregar un comentario o una imagen');
+                return false;
+            }
+            return true;
+        }
     </script>
 </body>
 </html>
