@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --bg-color: rgba(26, 26, 26, 1);
-            --nav-bg: rgba(13, 13, 13, 1);
+            --bg-color: rgb(15, 15, 15);
+            --nav-bg: rgb(0, 0, 0);
             --text-color: #ffffff;
             --accent-color: rgba(26, 26, 26, 1);
         }
@@ -40,20 +40,46 @@
             overflow-y: auto;
         }
 
+        /* Logo styling */
+        .site-logo {
+            font-size: 2.3rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-align: center;
+            padding: 10px 0 15px;
+            margin-top: 0px; /* Levantando el logo ligeramente */
+        }
+        
+        /* Navigation container */
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+            padding-left: 65px; /* Alineando con el centro del logo */
+        }
+        
         .nav-item {
             display: flex;
             align-items: center;
             padding: 10px;
             color: var(--text-color);
-            font-size: 1.36rem;
+            font-size: 1.36rem; /* Texto más grande */
             text-decoration: none;
-            margin: 5px 0;
-            border-radius: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
         }
-        
 
         .nav-item:hover {
             background: var(--accent-color);
+        }
+        
+        .nav-item-icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+            text-align: center;
         }
 
         .main-content {
@@ -296,7 +322,7 @@
 
             .left-nav, .right-nav {
                 display: none;
-                background: rgba(13, 13, 13, 1);
+                background: rgb(0, 0, 0);
                 position: fixed;
                 bottom: 60px;
                 left: 0;
@@ -317,7 +343,7 @@
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                background: rgba(13, 13, 13, 1);
+                background: rgb(0, 0, 0);
                 padding: 10px;
                 justify-content: space-around;
                 z-index: 101;
@@ -338,18 +364,24 @@
 <body>
     <div class="container">
         <nav class="left-nav">
-            <a href="{% url 'home' %}" class="nav-item">
-                🏠 Casita
-            </a>
-            <a href="#" class="nav-item">
-                💬 Chat
-            </a>
-            <a href="{% url 'profile' username=request.user.username %}" class="nav-item">
-                👤 Perfil
-            </a>
-            <a href="#post-box" class="nav-item">
-                ✏️ Postear
-            </a>
+            <!-- Logo placeholder -->
+            <div class="site-logo">posters</div>
+            
+            <!-- Navigation links -->
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="nav-item">
+                    <span class="nav-item-icon">🏠</span> Casita
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-item-icon">💬</span> Chat
+                </a>
+                <a href="{% url 'profile' username=request.user.username %}" class="nav-item">
+                    <span class="nav-item-icon">👤</span> Perfil
+                </a>
+                <a href="#post-box" class="nav-item">
+                    <span class="nav-item-icon">✏️</span> Postear
+                </a>
+            </div>
         </nav>
 
         <main class="main-content">
