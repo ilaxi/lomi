@@ -267,12 +267,6 @@ def delete_post(request, post_id):
         return redirect('home')
     return HttpResponseNotAllowed(['POST'])
 
-
-
-
-
-
-
-
-
+def sobre_view(request):
+    return render(request, 'core/sobrep.html')
 

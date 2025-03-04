@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4ju2n@$f9d0c=h)_g0lbb%k9&@rf(xa$d$g$&5ri$uf)*gev^4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [".replit.dev", ".replit.app", "127.0.0.1", "localhost", ".ngrok-free.app", "pythonanywhere.com"]
-CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app","https://*.ngrok-free.app", "https://*.pythonanywhere.com"]
+ALLOWED_HOSTS = [".replit.dev", ".replit.app", "127.0.0.1", "localhost", ".ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app","https://*.ngrok-free.app"]
 
 # Application definition
 

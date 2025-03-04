@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "FIXES & ADDS F-F-B'S.md",
+                "file": "B2.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "FIXES & ADDS F-F-B'S"
+              "title": "B2"
             }
           }
         ]
@@ -40,7 +40,7 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "byCreatedTimeReverse",
+                "sortOrder": "alphabetical",
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
@@ -165,9 +165,9 @@
   },
   "active": "20cea3480409df50",
   "lastOpenFiles": [
-    "B3.md",
-    "B2.md",
     "FIXES & ADDS F-F-B'S.md",
+    "B2.md",
+    "B3.md",
     "B5.md",
     "B4.md"
   ]

@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ profile_user.username }}</title>
+    <title>perfil de {{ profile_user.username }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&family=Niramit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: rgba(15, 15, 14);
             --nav-bg: rgba(0, 0, 0);
             --text-color: #ffffff;
             --accent-color: rgba(26, 26, 26, 1);
+            --icon-standard-size: 24px; 
+            --highlight-color: #ccccce;
+            --border-color: rgba(255, 255, 255, 0.226); 
         }
 
         * {
@@ -18,7 +24,7 @@
         }
 
         body {
-            background: var(--bg-color);
+            background: var(--nav-bg);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -40,19 +46,95 @@
             overflow-y: auto;
         }
 
+        .left-nav {
+            border: none;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .right-nav {
+            border: none;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .site-logo, .site-logo:link, .site-logo:visited {
+            font-size: 2.7rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            padding: 10px 0 10px;
+            margin-top: -30px;
+            font-family: 'Niramit', sans-serif;
+            letter-spacing: -1.9px;
+            color: #FFFFFF;
+            -webkit-text-stroke: 0.5px #FFFFFF;
+            text-decoration: none;
+            display: block;
+        }
+
         .nav-item {
             display: flex;
             align-items: center;
             padding: 10px;
             color: var(--text-color);
-            font-size: 1.36rem;
+            font-size: 1.36rem; 
             text-decoration: none;
-            margin: 5px 0;
-            border-radius: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-left: 70px; 
         }
 
         .nav-item:hover {
             background: var(--accent-color);
+        }
+
+        .nav-item-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .custom-icon {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
+        .icon-casa {
+            width: 28px;
+            height: 29px;
+        }
+
+        .icon-chat {
+            width: calc(var(--icon-standard-size) * 1.1); 
+            height: var(--icon-standard-size);
+        }
+
+        .icon-perfil {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+        }
+
+        .icon-lapiz {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            transform: rotate(-10deg); 
+        }
+
+        .mobile-icon {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            object-fit: contain;
         }
 
         .main-content {
@@ -60,6 +142,9 @@
             margin: 0 auto;
             padding: 20px;
             width: 100%;
+            margin-top: 8px;
+            position: relative; 
+            
         }
 
         .profile-header {
@@ -67,6 +152,7 @@
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
 
         .profile-header-top {
@@ -151,6 +237,8 @@
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 15px;
+            width: 100%;
+            border: 1px solid var(--border-color);
         }
 
         .post-header {
@@ -182,6 +270,7 @@
             object-fit: contain;
             margin: 10px 0;
             border-radius: 5px;
+            border: 1px solid var(--border-color);
         }
 
         .post-actions {
@@ -189,11 +278,31 @@
             gap: 10px;
             margin-top: 15px;
             padding: 10px 0;
-            border-top: 1px solid #9ea2a71f;
+            border-top: 1px solid var(--border-color);
         }
 
+        .post-nav {
+            background: #ccccce;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 7px 15px;
+            font-family: 'Niramit', sans-serif;
+            font-weight: bold;
+            color: #000000;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 90%;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .post-nav:hover {
+            background: #FFFFFF;
+        } 
+
         .action-btn {
-            background: #2d2d2e17;
+            background: #1d1d1d09;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
@@ -207,6 +316,7 @@
 
         .action-btn:hover {
             background: var(--accent-color);
+            border: 0.2px solid var(--border-color);
         }
 
         .liked {
@@ -237,6 +347,7 @@
 
         .mobile-nav {
             display: none;
+            border: 1px solid var(--border-color);
         }
 
         .link-preview {
@@ -251,6 +362,7 @@
             border-radius: 8px;
             overflow: hidden;
             transition: opacity 0.2s;
+            border: 1px solid var(--border-color);
         }
 
         .preview-card img {
@@ -258,6 +370,7 @@
             height: 250px;
             height: auto;
             object-fit: cover;
+            max-height: 363px;
         }
 
         .preview-info {
@@ -276,6 +389,71 @@
         }
 
 
+        ::-webkit-scrollbar {
+            width: 5px;
+        }   
+
+        ::-webkit-scrollbar-track {
+            background: black;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 5px;
+        }
+
+        .mobile-top-bar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-logo, .mobile-logo:link, .mobile-logo:visited {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: -13px;
+            font-family: 'Niramit', sans-serif;
+            letter-spacing: -2px;
+            color: #FFFFFF;
+            -webkit-text-stroke: 0.2px #FFFFFF;
+            text-decoration: none;
+            display: block;
+        }
+
+        .fab {
+            display: none;
+            position: fixed;
+            right: 20px;
+            bottom: 70px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #ccccce;
+            z-index: 102;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .h3de {
+            display: none;
+        }
+
+
+
         @media (min-width: 1600px) {
             .container {
                 grid-template-columns: 350px 1fr 350px;
@@ -288,6 +466,10 @@
             .main-content {
                 max-width: 700px;
             }
+
+            .site-logo {
+                font-size: 3rem;
+            }
         }
 
         @media (min-width: 769px) {
@@ -297,8 +479,9 @@
         }
 
         @media (max-width: 768px) {
-            .desktop-only {
-                display: none !important;
+            body {
+                padding-top: 50px;
+                padding-bottom: 60px;
             }
 
             .container {
@@ -354,17 +537,26 @@
             .left-nav, .right-nav {
                 display: none;
                 position: fixed;
-                bottom: 60px;
+                bottom: 0px;
                 left: 0;
                 width: 100%;
                 height: auto;
                 max-height: 100vh;
                 z-index: 100;
+                border-top: 1px solid #ffffff20;
                 background: rgb(0, 0, 0);
             }
 
             .left-nav.active, .right-nav.active {
                 display: block;
+            }
+
+            .mobile-top-bar {
+                display: flex;
+            }
+
+            .fab {
+                display: flex;
             }
 
             .mobile-nav {
@@ -374,41 +566,96 @@
                 left: 0;
                 width: 100%;
                 background: rgb(0, 0, 0);
-                padding: 11px;
+                padding: 3.5px;
                 justify-content: space-around;
                 z-index: 101;
-                border-top: 1px solid #ffffff20;
             }
 
             .mobile-nav a {
                 color: var(--text-color);
                 text-decoration: none;
                 font-size: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-icon.icon-casa {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .mobile-icon.icon-chat {
+                width: 28px;
+                height: 26px;
+            }
+            
+            .mobile-icon.icon-perfil {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .mobile-icon.icon-lapiz {
+                width: 24px;
+                height: 24px;
+                transform: rotate(-10deg);
+            }
+
+            .mobile-icon.icon-poster {
+                width: 34px;
+                height: 34px;
+                margin-top: 13px;
             }
 
             .main-content {
+                margin-top: 7px;
                 margin-bottom: 70px;
-                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
+
+    <div class= "mobile-top-bar">
+        <a href="{% url 'sobre' %}" class="mobile-logo">posters</a>
+    </div>
+
+    <a href="{% url 'home' %}" class="fab" id="fab-post">
+        <img src=" /media/icons&art/LapízSF.png" alt="Post" class="icon-lapiz" id="fab-lapiz-icon" style="width: 24px; height: 24px;">
+</a>
     <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
     <div class="container">
         <nav class="left-nav">
-            <a href="{% url 'home' %}" class="nav-item">
-                🏠 Casita
-            </a>
-            <a href="#" class="nav-item">
-                💬 Chat
-            </a>
-            <a href="{% url 'profile' username=request.user.username %}" class="nav-item">
-                👤 Perfil
-            </a>
-            <a href="{% url 'home' %}" class="nav-item">
-                ✏️ Postear
-            </a>
+            <a href="{% url 'sobre' %}" class="site-logo">posters</a>
+            
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="nav-item" id="home-link">
+                    <span class="nav-item-icon">
+                        {% if request.resolver_match.url_name == 'home' %}
+                        <img src="/media/icons&art/CasaCF.png" alt="Home" class="custom-icon icon-casa">
+                        {% else %}
+                        <img src="/media/icons&art/CasaSF.png" alt="Home" class="custom-icon icon-casa">
+                        {% endif %}
+                    </span> Inicio
+                </a>
+                <a href="#" class="nav-item" id="chat-link">
+                    <span class="nav-item-icon">
+                        <img src="/media/icons&art/chatSF.png" alt="Chat" class="custom-icon icon-chat">
+                    </span> Chat
+                </a>
+                <a href="{% url 'profile' username=request.user.username %}" class="nav-item" id="profile-link">
+                    <span class="nav-item-icon">
+                        {% if request.resolver_match.url_name == 'profile' %}
+                        <img src="/media/icons&art/PerfilCF.png" alt="Profile" class="custom-icon icon-perfil">
+                        {% else %}
+                        <img src="/media/icons&art/PerfilSF.png" alt="Profile" class="custom-icon icon-perfil">
+                        {% endif %}
+                    </span> Perfil
+                </a>
+                <a href="{% url 'home' %}" class="post-nav" id="post-link">
+                    Postear
+                </a>
+            </div>
         </nav>
 
         <main class="main-content">
@@ -499,22 +746,47 @@
     </div>
 
     <nav class="mobile-nav">
-        <a href="{% url 'home' %}"> <svg fill="#ccccce" width="30px" height="35px" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg"><path d="M12 3s-6.186 5.34-9.643 8.232c-.203.184-.357.452-.357.768 0 .553.447 1 1 1h2v7c0 .553.447 1 1 1h3c.553 0 1-.448 1-1v-4h4v4c0 .552.447 1 1 1h3c.553 0 1-.447 1-1v-7h2c.553 0 1-.447 1-1 0-.316-.154-.584-.383-.768-3.433-2.892-9.617-8.232-9.617-8.232z"/></svg></a><?xml version="1.0" encoding="utf-8"?>
-        <a href="#">💬</a>
-        <a href="{% url 'profile' username=request.user.username %}">👤</a>
-        <a href="{% url 'home' %}">✏️</a>
-        <a href="#" onclick="toggleUsers(event)">👥</a>
+        <a href="{% url 'home' %}" id="mobile-home">
+            {% if request.resolver_match.url_name == 'home' %}
+            <img src="/media/icons&art/CasaCF.png" alt="Home" class="mobile-icon icon-casa">
+            {% else %}
+            <img src="/media/icons&art/CasaSF.png" alt="Home" class="mobile-icon icon-casa">
+            {% endif %}
+        </a>
+        
+        <a href="#" id="mobile-chat">
+            <img src="/media/icons&art/chatSF.png" alt="Chat" class="mobile-icon icon-chat">
+        </a>
+
+        <a href="{% url 'profile' username=request.user.username %}" id="mobile-profile">
+            {% if request.resolver_match.url_name == 'profile' %}
+            <img src="/media/icons&art/PerfilCF.png" alt="Profile" class="mobile-icon icon-perfil">
+            {% else %}
+            <img src="/media/icons&art/PerfilSF.png" alt="Profile" class="mobile-icon icon-perfil">
+            {% endif %}
+        </a>
+
+        <a href="#" onclick="toggleUsers(event)" id="mobile-users">
+            <img src="/media/icons&art/posterSF.png" alt="Users" class="mobile-icon icon-poster" id="users-icon">
+        </a>
     </nav>
 
     <div class="followers-modal" id="followersModal">
         <div class="followers-content">
-            <h3>Seguidores de {{ profile_user.username }}</h3>
+            <h3 class="h3de"> Seguidores de {{ profile_user.username }}</h3>
             <ul class="followers-list" id="followersList"></ul>
-            <button class="close-button" onclick="closeFollowersModal()">Cerrar</button>
+            <button class="h3de" onclick="closeFollowersModal()">Cerrar</button>
         </div>
     </div>
 
+
+
+    
     <script>
+        const fabPost = document.getElementById('fab-post');
+        const fabLapizIcon = document.getElementById('fab-lapiz-icon');
+        const lapizIcon = document.getElementById('lapiz-icon');
+
         let currentPage = 1;
         let loading = false;
 
@@ -549,11 +821,23 @@
                     if (html.trim()) {
                         const tempContainer = document.createElement('div');
                         tempContainer.innerHTML = html;
-                        postsContainer.appendChild(tempContainer);
-                        initializeLikeButtons(tempContainer);
+                        
+                        // Check if there are any actual posts in the response
+                        const posts = tempContainer.querySelectorAll('.post');
+                        if (posts.length > 0) {
+                            postsContainer.appendChild(tempContainer);
+                            initializeLikeButtons(tempContainer);
+                        } else {
+                            // No posts found, disconnect observer
+                            intersectionObserver.disconnect();
+                            const endMessage = document.createElement('div');
+                            endMessage.className = 'text-center text-gray-500 py-4';
+                            endMessage.textContent = 'No hay más posts';
+                            postsContainer.appendChild(endMessage);
+                        }
                     } else {
-                        observer.disconnect();
-                        loadingElement.style.display = 'none';
+                        // Empty response, disconnect observer
+                        intersectionObserver.disconnect();
                         const endMessage = document.createElement('div');
                         endMessage.className = 'text-center text-gray-500 py-4';
                         endMessage.textContent = 'No hay más posts';
@@ -561,7 +845,9 @@
                     }
                 })
                 .catch(error => {
-                    console.error(error);('Error', error);
+                    console.error('Error:', error);
+                    // On error, disconnect observer
+                    intersectionObserver.disconnect();
                 })
                 .finally(() => {
                     loading = false;
@@ -572,6 +858,8 @@
                 container.querySelectorAll('.like-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const postId = this.dataset.postId;
+                        const likeIcon = this.querySelector('img');
+                        
                         fetch(`/post/${postId}/like/`, {
                             method: 'POST',
                             headers: {
@@ -583,6 +871,12 @@
                             const likesCount = this.querySelector('.likes-count');
                             likesCount.textContent = data.likes_count;
                             this.classList.toggle('liked', data.liked);
+                            
+                            if (data.liked) {
+                                likeIcon.src = "/media/icons&art/likeCF.png";
+                            } else {
+                                likeIcon.src = "/media/icons&art/likeSF.png";
+                            }
                         });
                     });
                 });
@@ -594,7 +888,14 @@
         function toggleUsers(e) {
             e.preventDefault();
             const rightNav = document.querySelector('.right-nav');
+            const usersIcon = document.getElementById('users-icon');
             rightNav.classList.toggle('active');
+
+            if (rightNav.classList.contains('active')) {
+                usersIcon.src = "/media/icons&art/posterCF.png";
+            } else {
+                usersIcon.src = "/media/icons&art/posterSF.png";
+            }
         }
 
         function toggleEditUsername() {

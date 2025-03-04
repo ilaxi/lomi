@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>home</title>
+    <title>posters</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&family=Niramit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: rgb(15, 15, 15);
             --nav-bg: rgb(0, 0, 0);
             --text-color: #ffffff;
             --accent-color: rgba(26, 26, 26, 1);
+            --icon-standard-size: 24px; 
+            --highlight-color: #ccccce;
+            --border-color: rgba(255, 255, 255, 0.226);
         }
 
         * {
@@ -18,7 +24,7 @@
         }
 
         body {
-            background: var(--bg-color);
+            background: var(--nav-bg);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -40,31 +46,46 @@
             overflow-y: auto;
         }
 
-        /* Logo styling */
-        .site-logo {
-            font-size: 2.3rem;
-            font-weight: bold;
-            margin-bottom: 25px;
-            text-align: center;
-            padding: 10px 0 15px;
-            margin-top: 0px; /* Levantando el logo ligeramente */
+        .left-nav {
+            border: none;
+            border-right: 1px solid var(--border-color);
+            align-items: center;
         }
         
-        /* Navigation container */
+        .right-nav {
+            border: none;
+            border-left: 1px solid var(--border-color);
+        }
+
+
+        .site-logo, .site-logo:link, .site-logo:visited {
+            font-size: 2.7rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            padding: 10px 0 10px;
+            margin-top: -30px;
+            font-family: 'Niramit', sans-serif;
+            letter-spacing: -1.9px;
+            color: #FFFFFF;
+            -webkit-text-stroke: 0.5px #FFFFFF;
+            text-decoration: none;
+            display: block;
+        }
+
         .nav-links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 8px;
-            padding-left: 65px; /* Alineando con el centro del logo */
+            gap: 20px;
+            padding-left: 70px; 
         }
-        
+
         .nav-item {
             display: flex;
             align-items: center;
             padding: 10px;
             color: var(--text-color);
-            font-size: 1.36rem; /* Texto más grande */
+            font-size: 1.36rem; 
             text-decoration: none;
             border-radius: 3px;
             transition: background-color 0.2s;
@@ -73,13 +94,55 @@
         .nav-item:hover {
             background: var(--accent-color);
         }
-        
+
         .nav-item-icon {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 28px;
             height: 28px;
             margin-right: 12px;
             text-align: center;
+        }
+
+        .custom-icon {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
+        .icon-casa {
+            width: 28px;
+            height: 29px;
+        }
+
+        .icon-chat {
+            width: calc(var(--icon-standard-size) * 1.1); 
+            height: var(--icon-standard-size);
+        }
+
+        .icon-perfil {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+        }
+
+        .icon-lapiz {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            transform: rotate(-10deg); 
+        }
+
+        .icon-poster {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            object-fit: contain;
+        }
+
+        .mobile-icon {
+            width: var(--icon-standard-size);
+            height: var(--icon-standard-size);
+            object-fit: contain;
         }
 
         .main-content {
@@ -87,6 +150,56 @@
             margin: 0 auto;
             padding: 20px;
             width: 100%;
+            margin-top: 8px;
+            position: relative; 
+            
+        }
+
+        .content-filter-nav {
+            position: fixed;
+            top: 0;
+            width: 100%; 
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--nav-bg);
+            z-index: 999;
+            padding: 0;
+            transition: transform 0.3s ease;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            
+        }
+
+        .content-filter-item {
+            color: var(--highlight-color);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-filter-item.active {
+            color: var(--text-color);
+        }
+
+        .content-filter-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: 1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--highlight-color);
         }
 
         .post-box {
@@ -95,6 +208,8 @@
             border-radius: 5px;
             margin-bottom: 20px;
             width: 100%;
+            margin-top: 38px;
+            border: 1px solid var(--border-color);
         }
 
         .image-upload {
@@ -133,7 +248,6 @@
             cursor: pointer;
         }
 
-
         .post-form {
             display: flex;
             flex-direction: column;
@@ -158,12 +272,31 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.2s ease;
-            
         }
 
         .post-button:hover {
             transform: scale(1.009);
         }
+
+        .post-nav {
+            background: #ccccce;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 7px 15px;
+            font-family: 'Niramit', sans-serif;
+            font-weight: bold;
+            color: #000000;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 90%;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .post-nav:hover {
+            background: #FFFFFF;
+        } 
 
         .post {
             background: var(--nav-bg);
@@ -171,6 +304,7 @@
             border-radius: 5px;
             margin-bottom: 15px;
             width: 100%;
+            border: 1px solid var(--border-color);
         }
 
         .post-header {
@@ -202,6 +336,7 @@
             object-fit: contain;
             margin: 10px 0;
             border-radius: 5px;
+            border: 1px solid var(--border-color);
         }
 
         .post-actions {
@@ -209,11 +344,11 @@
             gap: 10px;
             margin-top: 15px;
             padding: 10px 0;
-            border-top: 1px solid #9ea2a71f;
+            border-top: 1px solid var(--border-color);
         }
 
         .action-btn {
-            background: #2d2d2e17;
+            background: #1d1d1d09;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
@@ -227,6 +362,7 @@
 
         .action-btn:hover {
             background: var(--accent-color);
+            border: 0.2px solid var(--border-color);
         }
 
         .liked {
@@ -257,6 +393,7 @@
 
         .mobile-nav {
             display: none;
+            border: 1px solid var(--border-color);
         }
 
         .link-preview {
@@ -271,6 +408,7 @@
             border-radius: 8px;
             overflow: hidden;
             transition: opacity 0.2s;
+            border: 1px solid var(--border-color);
         }
 
         .preview-card img {
@@ -296,11 +434,81 @@
             -webkit-box-orient: vertical;
         }
 
-        
-        
+        ::-webkit-scrollbar {
+            width: 5px;
+        }   
 
-        
-        
+        ::-webkit-scrollbar-track {
+            background: black;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 5px;
+        }
+
+        .mobile-top-bar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: var(--nav-bg);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-logo, .mobile-logo:link, .mobile-logo:visited {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: -13px;
+            font-family: 'Niramit', sans-serif;
+            letter-spacing: -2px;
+            color: #FFFFFF;
+            -webkit-text-stroke: 0.5px #FFFFFF;
+            text-decoration: none;
+            display: block;
+        }
+
+        .fab {
+            display: none;
+            position: fixed;
+            right: 20px;
+            bottom: 70px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #ccccce;
+            z-index: 102;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-content-filter-nav {
+            display: none;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 99;
+            padding: 0;
+            transition: transform 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
         @media (min-width: 1600px) {
             .container {
                 grid-template-columns: 350px 1fr 350px;
@@ -313,9 +521,26 @@
             .main-content {
                 max-width: 700px;
             }
+
+            .site-logo {
+                font-size: 3rem;
+            }
         }
 
         @media (max-width: 768px) {
+            body {
+                padding-top: 85px; 
+                padding-bottom: 60px;
+            }
+            
+            .content-filter-nav{
+                display: none;
+            }
+            
+            .mobile-content-filter-nav {
+                display: flex;
+            }
+
             .container {
                 grid-template-columns: 1fr;
             }
@@ -324,7 +549,7 @@
                 display: none;
                 background: rgb(0, 0, 0);
                 position: fixed;
-                bottom: 60px;
+                bottom: 0px;
                 left: 0;
                 width: 100%;
                 height: auto;
@@ -337,6 +562,14 @@
                 display: block;
             }
 
+            .mobile-top-bar {
+                display: flex;
+            }
+
+            .fab {
+                display: flex;
+            }
+
             .mobile-nav {
                 display: flex;
                 position: fixed;
@@ -344,7 +577,7 @@
                 left: 0;
                 width: 100%;
                 background: rgb(0, 0, 0);
-                padding: 10px;
+                padding: 3.5px;
                 justify-content: space-around;
                 z-index: 101;
             }
@@ -353,38 +586,103 @@
                 color: var(--text-color);
                 text-decoration: none;
                 font-size: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-icon.icon-casa {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .mobile-icon.icon-chat {
+                width: 28px;
+                height: 26px;
+            }
+            
+            .mobile-icon.icon-perfil {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .mobile-icon.icon-lapiz {
+                width: 24px;
+                height: 24px;
+                transform: rotate(-10deg);
+            }
+            
+            .mobile-icon.icon-poster {
+                width: 34px;
+                height: 34px;
+                margin-top: 13px;
             }
 
             .main-content {
+                margin-top: 7px;
                 margin-bottom: 70px;
+            }
+            
+            .post-box {
+                margin-top: 0px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="mobile-top-bar">
+        <a href="{% url 'sobre' %}" class="mobile-logo">posters</a>
+    </div>
+
+    <div class="mobile-content-filter-nav" id="mobile-content-filter">
+        <a href="#" class="content-filter-item active" id="mobile-all-content">Todo el mundo</a>
+        <a href="#" class="content-filter-item" id="mobile-popular-content">Popular</a>
+    </div>
+
+    <a href="#post-box" class="fab" id="fab-post">
+        <img src="/media/icons&art/LapízSF.png" alt="Post" class="icon-lapiz" id="fab-lapiz-icon" style="width: 24px; height: 24px;">
+    </a>
+
     <div class="container">
         <nav class="left-nav">
-            <!-- Logo placeholder -->
-            <div class="site-logo">posters</div>
+            <a href="{% url 'sobre' %}" class="site-logo">posters</a>
             
-            <!-- Navigation links -->
             <div class="nav-links">
-                <a href="{% url 'home' %}" class="nav-item">
-                    <span class="nav-item-icon">🏠</span> Casita
+                <a href="{% url 'home' %}" class="nav-item" id="home-link">
+                    <span class="nav-item-icon">
+                        {% if request.resolver_match.url_name == 'home' %}
+                        <img src="/media/icons&art/CasaCF.png" alt="Home" class="custom-icon icon-casa">
+                        {% else %}
+                        <img src="/media/icons&art/CasaSF.png" alt="Home" class="custom-icon icon-casa">
+                        {% endif %}
+                    </span> Inicio
                 </a>
-                <a href="#" class="nav-item">
-                    <span class="nav-item-icon">💬</span> Chat
+                <a href="#" class="nav-item" id="chat-link">
+                    <span class="nav-item-icon">
+                        <img src="/media/icons&art/chatSF.png" alt="Chat" class="custom-icon icon-chat">
+                    </span> Chat
                 </a>
-                <a href="{% url 'profile' username=request.user.username %}" class="nav-item">
-                    <span class="nav-item-icon">👤</span> Perfil
+                <a href="{% url 'profile' username=request.user.username %}" class="nav-item" id="profile-link">
+                    <span class="nav-item-icon">
+                        {% if request.resolver_match.url_name == 'profile' %}
+                        <img src="/media/icons&art/PerfilCF.png" alt="Profile" class="custom-icon icon-perfil">
+                        {% else %}
+                        <img src="/media/icons&art/PerfilSF.png" alt="Profile" class="custom-icon icon-perfil">
+                        {% endif %}
+                    </span> Perfil
                 </a>
-                <a href="#post-box" class="nav-item">
-                    <span class="nav-item-icon">✏️</span> Postear
+                <a href="#post-box" class="post-nav" id="post-link">
+                    Postear
                 </a>
             </div>
         </nav>
 
         <main class="main-content">
+            <div class="content-filter-nav" id="content-filter">
+                <a href="#" class="content-filter-item active" id="all-content">Todo el mundo</a>
+                <a href="#" class="content-filter-item" id="popular-content">Popular</a>
+            </div>
+            
             <div id="post-box" class="post-box">
                 <form method="post" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -428,15 +726,29 @@
     </div>
 
     <nav class="mobile-nav">
-        <a href="{% url 'home' %}"> <svg fill="#ccccce" width="30px" height="35px" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg"><path d="M12 3s-6.186 5.34-9.643 8.232c-.203.184-.357.452-.357.768 0 .553.447 1 1 1h2v7c0 .553.447 1 1 1h3c.553 0 1-.448 1-1v-4h4v4c0 .552.447 1 1 1h3c.553 0 1-.447 1-1v-7h2c.553 0 1-.447 1-1 0-.316-.154-.584-.383-.768-3.433-2.892-9.617-8.232-9.617-8.232z"/></svg></a><?xml version="1.0" encoding="utf-8"?>
+        <a href="{% url 'home' %}" id="mobile-home">
+            {% if request.resolver_match.url_name == 'home' %}
+            <img src="/media/icons&art/CasaCF.png" alt="Home" class="mobile-icon icon-casa">
+            {% else %}
+            <img src="/media/icons&art/CasaSF.png" alt="Home" class="mobile-icon icon-casa">
+            {% endif %}
+        </a>
         
-        <a href="#">💬</a>
+        <a href="#" id="mobile-chat">
+            <img src="/media/icons&art/chatSF.png" alt="Chat" class="mobile-icon icon-chat">
+        </a>
 
-        <a href="{% url 'profile' username=request.user.username %}">👤</a>
+        <a href="{% url 'profile' username=request.user.username %}" id="mobile-profile">
+            {% if request.resolver_match.url_name == 'profile' %}
+            <img src="/media/icons&art/PerfilCF.png" alt="Profile" class="mobile-icon icon-perfil">
+            {% else %}
+            <img src="/media/icons&art/PerfilSF.png" alt="Profile" class="mobile-icon icon-perfil">
+            {% endif %}
+        </a>
 
-        <a href="#post-box">✏️</a>
-
-        <a href="#" onclick="toggleUsers(event)">👥</a>
+        <a href="#" onclick="toggleUsers(event)" id="mobile-users">
+            <img src="/media/icons&art/posterSF.png" alt="Users" class="mobile-icon icon-poster" id="users-icon">
+        </a>
     </nav>
 
     <script>
@@ -473,7 +785,6 @@
             this.style.display = 'none';
         });
                 
-
         document.getElementById('image-input').onchange = function() {
             document.getElementById('file-name').textContent = 
                 this.files[0] ? '📎 ' + this.files[0].name : '';
@@ -496,8 +807,69 @@
         function toggleUsers(e) {
             e.preventDefault();
             const rightNav = document.querySelector('.right-nav');
+            const usersIcon = document.getElementById('users-icon');
+            
             rightNav.classList.toggle('active');
+            
+            if (rightNav.classList.contains('active')) {
+                usersIcon.src = "/media/icons&art/posterCF.png";
+            } else {
+                usersIcon.src = "/media/icons&art/posterSF.png";
+            }
         }
+
+        const lapizIcon = document.getElementById('lapiz-icon');
+        const fabLapizIcon = document.getElementById('fab-lapiz-icon');
+        const postLink = document.getElementById('post-link');
+        const fabPost = document.getElementById('fab-post');
+        
+        let lastScrollTop = 0;
+        const contentFilter = document.getElementById('content-filter');
+        const mobileContentFilter = document.getElementById('mobile-content-filter');
+
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                contentFilter.style.transform = 'translateY(-100%)';
+                mobileContentFilter.style.transform = 'translateY(-100%)';
+            } else {
+                contentFilter.style.transform = 'translateY(0)';
+                mobileContentFilter.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        document.getElementById('all-content').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('popular-content').classList.remove('active');
+            document.getElementById('mobile-popular-content').classList.remove('active');
+            this.classList.add('active');
+            document.getElementById('mobile-all-content').classList.add('active');
+        });
+
+        document.getElementById('popular-content').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('all-content').classList.remove('active');
+            document.getElementById('mobile-all-content').classList.remove('active');
+            this.classList.add('active');
+            document.getElementById('mobile-popular-content').classList.add('active');
+        });
+
+        document.getElementById('mobile-all-content').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('mobile-popular-content').classList.remove('active');
+            document.getElementById('popular-content').classList.remove('active');
+            this.classList.add('active');
+            document.getElementById('all-content').classList.add('active');
+        });
+
+        document.getElementById('mobile-popular-content').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('mobile-all-content').classList.remove('active');
+            document.getElementById('all-content').classList.remove('active');
+            this.classList.add('active');
+            document.getElementById('popular-content').classList.add('active');
+        });
 
         let currentPage = 1;
         let loading = false;
@@ -506,6 +878,24 @@
             const postsContainer = document.getElementById('posts-container');
             const loadingElement = document.getElementById('loading');
             const observer = document.getElementById('intersection-observer');
+
+            function adjustFilterBar() {
+                const mainContent = document.querySelector('.main-content');
+                const leftNav = document.querySelector('.left-nav');
+                
+                if (window.innerWidth <= 768) {
+                    contentFilter.style.display = 'none';
+                    return;
+                }
+                
+                const mainRect = mainContent.getBoundingClientRect();
+                contentFilter.style.width = mainRect.width + 'px';
+                contentFilter.style.left = mainRect.left + 'px';
+                contentFilter.style.display = 'flex';
+            }
+            
+            adjustFilterBar();
+            window.addEventListener('resize', adjustFilterBar);
 
             if (observer) {
                 const intersectionObserver = new IntersectionObserver((entries) => {
@@ -518,45 +908,47 @@
             }
 
             function loadMorePosts() {
-    if (loading) return;
-    loading = true;
-    currentPage++;
-    loadingElement.style.display = 'block';
+                if (loading) return;
+                loading = true;
+                currentPage++;
+                loadingElement.style.display = 'block';
 
-    fetch(`?page=${currentPage}`, {
-        headers: {
-            'HX-Request': 'true'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        if (html.trim()) {
-            const tempContainer = document.createElement('div');
-            tempContainer.innerHTML = html;
-            postsContainer.appendChild(tempContainer);
-            initializeLikeButtons(tempContainer);
-        } else {
-            observer.disconnect();
-            loadingElement.style.display = 'none';
-            const endMessage = document.createElement('div');
-            endMessage.className = 'text-center text-gray-500 py-4';
-            endMessage.textContent = 'No hay más posts';
-            postsContainer.appendChild(endMessage);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        loading = false;
-        loadingElement.style.display = 'none';
-    });
-}
+                fetch(`?page=${currentPage}`, {
+                    headers: {
+                        'HX-Request': 'true'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    if (html.trim()) {
+                        const tempContainer = document.createElement('div');
+                        tempContainer.innerHTML = html;
+                        postsContainer.appendChild(tempContainer);
+                        initializeLikeButtons(tempContainer);
+                    } else {
+                        observer.disconnect();
+                        loadingElement.style.display = 'none';
+                        const endMessage = document.createElement('div');
+                        endMessage.className = 'text-center text-gray-500 py-4';
+                        endMessage.textContent = 'No hay más posts';
+                        postsContainer.appendChild(endMessage);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    loading = false;
+                    loadingElement.style.display = 'none';
+                });
+            }
 
             function initializeLikeButtons(container) {
                 container.querySelectorAll('.like-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const postId = this.dataset.postId;
+                        const likeIcon = this.querySelector('img');
+                        
                         fetch(`/post/${postId}/like/`, {
                             method: 'POST',
                             headers: {
@@ -568,6 +960,13 @@
                             const likesCount = this.querySelector('.likes-count');
                             likesCount.textContent = data.likes_count;
                             this.classList.toggle('liked', data.liked);
+                            
+                            // Update the like icon based on the liked state
+                            if (data.liked) {
+                                likeIcon.src = "/media/icons&art/likeCF.png";
+                            } else {
+                                likeIcon.src = "/media/icons&art/likeSF.png";
+                            }
                         });
                     });
                 });
@@ -575,10 +974,6 @@
 
             initializeLikeButtons(postsContainer);
         });
-
-        
-
-        
     </script>
 </body>
 </html>

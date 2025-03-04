@@ -44,11 +44,20 @@
 </div>
     <div class="post-actions">
         <button class="action-btn like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
-            ❤️ <span class="likes-count">{{ post.get_likes_count }}</span>
+            <img src="/media/icons&art/{% if request.user in post.likes.all %}likeCF.png{% else %}likeSF.png{% endif %}" alt="Like" style="width: 14px; height: 14px;">
+            <span class="likes-count">{{ post.get_likes_count }}</span>
         </button>
-        <button class="action-btn">🔄 Repost</button>
+        <button class="action-btn">
+            <img src="/media/icons&art/repostSF.png" alt="Repost" style="width: 20px; height: 20px;">
+            {{ post.get_reposts_count }}
+        </button>
         <a href="{% url 'post_detail' post.id %}" class="action-btn">
-            💬 {{ post.get_comments_count }}
+            {% if request.resolver_match.url_name == 'post_detail' %}
+            <img src="/media/icons&art/commentCF.png" alt="Comment" style="width: 16px; height: 16px;">
+            {% else %}
+            <img src="/media/icons&art/commentSF.png" alt="Comment" style="width: 16px; height: 16px;">
+            {% endif %}
+            {{ post.get_comments_count }}
         </a>
     </div>
 </article>
@@ -154,4 +163,17 @@
             });
         }
     }
+
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const likeIcon = this.querySelector('img');
+            const isLiked = this.classList.contains('liked');
+            
+            if (isLiked) {
+                likeIcon.src = "/media/icons&art/likeSF.png";
+            } else {
+                likeIcon.src = "/media/icons&art/likeCF.png";
+            }
+        });
+    });
 </script>
